@@ -449,6 +449,12 @@ bool Stake::CheckHash(const CBlockIndex* pindexPrev, unsigned int nBits, const C
     return !(hashProofOfStake > bnWeight * bnTarget);
 }
 
+// Check whether the coinstake timestamp meets protocol
+bool Stake::CheckTimestamp(int64_t nTimeBlock, int64_t nTimeTx)
+{
+    return ((nTimeTx <= nTimeBlock) && (nTimeBlock <= nTimeTx + MaxPosClockDrift));
+}
+
 bool Stake::isForbidden(const CScript& scriptPubKey)
 {
     CTxDestination dest; uint160 hash;
